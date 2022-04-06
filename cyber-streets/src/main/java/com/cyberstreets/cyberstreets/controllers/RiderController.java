@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cyberstreets.cyberstreets.model.Rider;
@@ -19,8 +20,14 @@ public class RiderController {
 	private List<Rider> riders = createList();
 
 	@RequestMapping(value = "/riders", method = RequestMethod.GET, produces = "application/json")
-	public List<Rider> firstPage() {
-		return riders;
+	public Rider firstPage(@RequestParam("email") String email,
+            @RequestParam("password") String password) {
+		for(int i = 0; i < riders.size(); i++) {
+			if(riders.get(i).getEmail().equals(email)
+					&& riders.get(i).getPassword().equals(password))
+				return riders.get(i);
+		}
+		return null; 
 	}
 
 	@RequestMapping(value = "/riders", method = RequestMethod.POST)
